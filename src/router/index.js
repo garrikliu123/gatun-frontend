@@ -1,29 +1,101 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Home from '../views/Home.vue';
+
+import Home from 'views/Home';
+import Manage from 'views/Manage';
+import Category from 'views/Category';
+import ProductList from 'views/Category/ProductList';
+import Article from 'views/Article';
+import Product from 'views/Product';
+import Search from 'views/SearchResult';
+import Section from 'views/ProductList';
 
 Vue.use(VueRouter);
 
-const routes = [
-  {
-    path: '/',
-    name: 'Home',
-    component: Home,
-  },
-  {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
-  },
+const routes = [{
+        path: '/',
+        redirect: '/home',
+    },
+    // Home Page 首页
+    {
+        path: '/home',
+        component: Home,
+    },
+    // Category 分类页
+    {
+        path: '/category/:categoryType',
+        component: Category,
+        props: true,
+    },
+    // Topic 分类页
+    {
+        path: '/topic/:topicName',
+        component: ProductList,
+        props: true,
+    },
+    // Product 商品页
+    {
+        path: '/product/:productId',
+        component: Product,
+        props: true,
+    },
+    {
+        path: '/section/:sectionId',
+        component: Section,
+        props: true,
+    },
+    // Manage Page 管理页面
+    {
+        path: '/manage',
+        component: Manage
+    },
+    {
+        path: '/contact',
+        component: Article,
+        props: {
+            title: "Contact Us"
+        }
+    },
+    {
+        path: '/about',
+        component: Article,
+        props: {
+            title: "About Us"
+        }
+    },
+    {
+        path: '/search/:search',
+        component: Search,
+        props: true,
+    },
+    // No Match 没有匹配路径，重定向到首页
+    {
+        path: '*',
+        redirect: '/'
+    }
 ];
 
 const router = new VueRouter({
-  mode: 'history',
-  base: process.env.BASE_URL,
-  routes,
+    mode: 'history',
+    base: process.env.BASE_URL,
+    routes,
 });
+
+router.beforeEach((to, from, next) => {
+    const params = to.params;
+    const fullPath = to.fullPath;
+
+    if (fullPath.includes("/category")) {
+
+        if (["products", "parameters", "applications"].indexOf(params.categoryType.toLowerCase()) ==
+            -1) {
+            next("/");
+        }
+    }
+
+    next();
+
+
+})
 
 export default router;

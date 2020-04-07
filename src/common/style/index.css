@@ -1,0 +1,11 @@
+* {
+  outline: none;
+}
+
+button {
+  user-select: none;
+}
+
+.ap-section {
+  margin-bottom: 20px;
+}

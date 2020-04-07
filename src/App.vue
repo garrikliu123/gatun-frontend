@@ -1,32 +1,47 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+    <ap-page-container v-loading.fullscreen.lock="fullScreenLoading">
+      <keep-alive>
+        <router-view></router-view>
+      </keep-alive>
+    </ap-page-container>
   </div>
 </template>
+
+<script>
+import { mapGetters, mapActions } from "vuex";
+import apPageContainer from "components/PageContainer";
+export default {
+  name: "app",
+
+  data() {
+    return {};
+  },
+
+  computed: {
+    ...mapGetters(["fullScreenLoading"])
+  },
+
+  mounted() {
+    this.initSite();
+  },
+
+  methods: {
+    ...mapActions(["initSite"])
+  },
+
+  components: {
+    "ap-page-container": apPageContainer
+  }
+};
+</script>
 
 <style lang="less">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
+  text-align: center;
 }
 </style>
