@@ -22,7 +22,7 @@ app.use(express.static("./dist"));
 app.use(
     "/api",
     proxy({
-        target: "http://localhost:8081/apera",
+        target: "http://localhost:8081/gatun",
         changeOrigin: true,
         pathRewrite: {
             "^/api": "",
