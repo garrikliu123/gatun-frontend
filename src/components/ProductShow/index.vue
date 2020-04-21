@@ -94,7 +94,7 @@ export default {
     -webkit-line-clamp: 2;
     margin: 0;
     margin-top: 10px;
-    height: 60px;
+    height: 55px;
     font-weight: bold;
     padding: 0 10px;
   }

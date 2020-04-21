@@ -1,12 +1,19 @@
 <template>
   <div class="product-list-container">
-    <h1 v-if="title" class="product-list-title">{{ title }}</h1>
+    <h1
+      v-if="title"
+      class="product-list-title"
+    >{{ title }}</h1>
     <div class="product-list">
-      <div class="product-show-container" v-for="(product, index) in productList" :key="index">
+      <div
+        class="product-show-container"
+        v-for="(product, index) in productList"
+        :key="index"
+      >
         <ap-product-show
           class="product-show"
           :title="product.productName"
-          :imgUrl="product.productImageList ? product.productImageList[0].url : ''"
+          :imgUrl="product.productImageList && product.productImageList[0] ? product.productImageList[0].url : ''"
           :price="product.productPrice"
           shadow="hover"
           @productClick="onProductClick(product.productId)"
@@ -45,7 +52,10 @@ export default {
       this.addProudctToCart({
         productId,
         amount: 1,
-        option: productOptionList && productOptionList.length > 0 ? productOptionList[0] : ""
+        option:
+          productOptionList && productOptionList.length > 0
+            ? productOptionList[0]
+            : ""
       });
 
       this.$message({

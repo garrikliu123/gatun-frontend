@@ -2,7 +2,10 @@
   <div class="ap-category">
     <h1 class="title">{{ title }}</h1>
     <el-divider content-position="right">
-      <i class="el-icon-shopping-bag-2" style="font-size: 1.2em;"></i>
+      <i
+        class="el-icon-shopping-bag-2"
+        style="font-size: 1.2em;"
+      ></i>
     </el-divider>
     <div class="topic-list">
       <div
@@ -12,7 +15,10 @@
         @click="onCardClicked(topic.topicName)"
       >
         <el-card class="topic-card">
-          <img :src="topic.topicImage" class="image" />
+          <img
+            :src="topic.topicImage"
+            class="image"
+          />
           <div class="card-title">
             <div class="title-text">{{ topic.topicName }}</div>
           </div>
@@ -27,8 +33,8 @@ export default {
   props: {
     categoryType: {
       type: String,
-      default: "",
-    },
+      default: ""
+    }
   },
 
   date() {
@@ -64,7 +70,7 @@ export default {
 
     matchedTopicList() {
       let list = [];
-      this.topicList.forEach((item) => {
+      this.topicList.forEach(item => {
         if (item.topicType === this.type) {
           list.push(item);
         }
@@ -72,14 +78,14 @@ export default {
       return list;
     },
 
-    ...mapGetters(["topicList"]),
+    ...mapGetters(["topicList"])
   },
 
   methods: {
     onCardClicked(topicName) {
       this.$router.push("/topic/" + topicName);
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="less">
@@ -92,6 +98,7 @@ export default {
   .topic-list {
     display: flex;
     flex-direction: row;
+    justify-content: center;
     flex-wrap: wrap;
   }
 

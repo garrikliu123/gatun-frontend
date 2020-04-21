@@ -218,7 +218,7 @@ export default {
 
     .title {
       margin-bottom: 50px;
-      font-size: 3em;
+      font-size: 1.5em;
       word-break: break-all;
       text-align: left;
       font-weight: bold;
