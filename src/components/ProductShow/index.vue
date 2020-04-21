@@ -7,7 +7,10 @@
   >
     <div class="product-img-container">
       <div class="image-cover"></div>
-      <ap-image class="product-img" :imgUrl="imgUrl"></ap-image>
+      <ap-image
+        class="product-img"
+        :imgUrl="imgUrl"
+      ></ap-image>
     </div>
 
     <div class="divider-container">
@@ -19,9 +22,11 @@
     <p class="product-title">{{ title }}</p>
     <p class="product-price">${{ price }}</p>
 
-    <el-button class="product-add-button" type="primary" @click.stop="$emit('addCartClick')"
-      >ADD TO CART</el-button
-    >
+    <el-button
+      class="product-add-button"
+      type="primary"
+      @click.stop="$emit('addCartClick')"
+    >ADD TO CART</el-button>
   </el-card>
 </template>
 <script>
@@ -31,28 +36,28 @@ export default {
   props: {
     shadow: {
       type: String,
-      default: "always",
+      default: "always"
     },
 
     title: {
       type: String,
-      default: "",
+      default: ""
     },
 
     imgUrl: {
       tyle: String,
-      default: "",
+      default: ""
     },
 
     price: {
       type: [String, Number],
-      default: "",
-    },
+      default: ""
+    }
   },
 
   components: {
-    "ap-image": apImage,
-  },
+    "ap-image": apImage
+  }
 };
 </script>
 <style lang="less" scoped>
@@ -74,6 +79,7 @@ export default {
 
   .product-img {
     width: 100%;
+    height: 100%;
   }
 
   .divider-container {

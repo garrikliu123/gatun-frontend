@@ -2,22 +2,41 @@
   <div class="ap-product">
     <div class="product-show">
       <!-- Carousel 轮播图 -->
-      <el-carousel class="ap-carousel" height="500px">
-        <el-carousel-item v-for="item in matchedProduct.productImageList || []" :key="item.name">
-          <el-image class="carousel_img" fit="contain" :src="item.url"></el-image>
+      <el-carousel
+        class="ap-carousel"
+        height="500px"
+      >
+        <el-carousel-item
+          v-for="item in matchedProduct.productImageList || []"
+          :key="item.name"
+        >
+          <el-image
+            class="carousel_img"
+            fit="contain"
+            :src="item.url"
+          ></el-image>
         </el-carousel-item>
       </el-carousel>
       <div class="right-group">
         <div class="title">
           {{ matchedProduct.productName }}
         </div>
-        <el-divider content-position="right"
-          ><i class="ap-nav-icon el-icon-shopping-cart-2" style="font-size: 1.2em;"></i
-        ></el-divider>
-        <div class="price" v-if="matchedProduct.productPrice >= 1000" v-format="'CAD $#,##0.00'">
+        <el-divider content-position="right"><i
+            class="ap-nav-icon el-icon-shopping-cart-2"
+            style="font-size: 1.2em;"
+          ></i></el-divider>
+        <div
+          class="price"
+          v-if="matchedProduct.productPrice >= 1000"
+          v-format="'CAD $#,##0.00'"
+        >
           {{ matchedProduct.productPrice }}
         </div>
-        <div class="price" v-else v-format="'CAD $##0.00'">
+        <div
+          class="price"
+          v-else
+          v-format="'CAD $##0.00'"
+        >
           {{ matchedProduct.productPrice }}
         </div>
         <el-select
@@ -35,11 +54,23 @@
           >
           </el-option>
         </el-select>
-        <el-input-number class="count" v-model="count" :min="1" :max="100"></el-input-number>
-        <el-button type="success" class="button" @click="onAddClick">ADD TO CART</el-button>
+        <el-input-number
+          class="count"
+          v-model="count"
+          :min="1"
+          :max="100"
+        ></el-input-number>
+        <el-button
+          type="success"
+          class="button"
+          @click="onAddClick"
+        >ADD TO CART</el-button>
       </div>
     </div>
-    <ap-tab-display class="ap-tab-display" :product="matchedProduct"></ap-tab-display>
+    <ap-tab-display
+      class="ap-tab-display"
+      :product="matchedProduct"
+    ></ap-tab-display>
   </div>
 </template>
 <script>
@@ -145,6 +176,11 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+
+  .carousel_img {
+    height: 100%;
+    width: 100%;
   }
 
   .el-carousel {
