@@ -10,27 +10,28 @@
           :price="product.productPrice"
           shadow="hover"
           @productClick="onProductClick(product.productId)"
-          @addCartClick="onAddCartClick"
+          @addCartClick="onAddCartClick(product)"
         ></ap-product-show>
       </div>
     </div>
   </div>
 </template>
 <script>
+import { mapActions } from "vuex";
 import apProductShow from "components/ProductShow";
 
 export default {
   props: {
     title: {
       type: String,
-      default: "",
+      default: ""
     },
     productList: {
       type: Array,
       default: () => {
         return [];
-      },
-    },
+      }
+    }
   },
 
   methods: {
@@ -38,14 +39,28 @@ export default {
       this.$router.push("/product/" + productId);
     },
 
-    onAddCartClick() {
-      console.log("Add Cart");
+    onAddCartClick(product) {
+      const productOptionList = JSON.parse(product.productOptions);
+      const productId = product.productId;
+      this.addProudctToCart({
+        productId,
+        amount: 1,
+        option: productOptionList && productOptionList.length > 0 ? productOptionList[0] : ""
+      });
+
+      this.$message({
+        type: "success",
+        message: "Add Success!",
+        showClose: true
+      });
     },
+
+    ...mapActions(["addProudctToCart"])
   },
 
   components: {
-    "ap-product-show": apProductShow,
-  },
+    "ap-product-show": apProductShow
+  }
 };
 </script>
 <style lang="less" scoped>

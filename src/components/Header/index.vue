@@ -14,7 +14,7 @@
       </div>
       <template v-for="(item, index) in navList">
         <el-menu-item
-          v-if="item.onlyManager ? (user && user.isManager == true) : true"
+          v-if="item.onlyManager ? user && user.userType == 'manager' : true"
           :key="index"
           :index="index.toString()"
         >
@@ -51,10 +51,21 @@
             slot="dropdown"
             v-else
           >
+            <el-dropdown-item @click.native="$router.push('account')">My Account</el-dropdown-item>
             <el-dropdown-item @click.native="onLogoutClick()">Log Out</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <i class="ap-nav-icon el-icon-shopping-cart-2"></i>
+        <el-popover
+          placement="bottom-end"
+          width="500"
+          trigger="click"
+        >
+          <ap-cart></ap-cart>
+          <i
+            slot="reference"
+            class="ap-nav-icon el-icon-shopping-cart-2"
+          ></i>
+        </el-popover>
       </div>
     </el-menu>
     <ap-login
@@ -67,6 +78,7 @@
 import { mapGetters, mapActions } from "vuex";
 import headerNavConfig from "common/config/header_nav_config";
 import LoginDialog from "views/Login";
+import Cart from "components/Cart";
 export default {
   data() {
     return {
@@ -86,7 +98,11 @@ export default {
       immediate: true,
       handler(path) {
         if (path == "/manage") {
-          if (!this.user || !this.user.isManager) {
+          if (!this.user || this.user.userType !== "manager") {
+            this.$router.push("/");
+          }
+        } else if (path == "/account") {
+          if (!this.user) {
             this.$router.push("/");
           }
         }
@@ -134,7 +150,8 @@ export default {
       } else {
         this.$message({
           message: "Please enter some keyword!",
-          type: "warning"
+          type: "warning",
+          showClose: true
         });
       }
     },
@@ -146,13 +163,15 @@ export default {
 
     onLogoutClick() {
       this.logout();
+      this.$router.push("home");
     },
 
     ...mapActions(["logout"])
   },
 
   components: {
-    "ap-login": LoginDialog
+    "ap-login": LoginDialog,
+    "ap-cart": Cart
   }
 };
 </script>

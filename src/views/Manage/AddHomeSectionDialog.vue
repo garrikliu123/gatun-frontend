@@ -157,14 +157,14 @@ import homeSectionApi from "api/homeSection.js";
 export default {
   props: {
     mode: {
-      required: true,
+      required: true
     },
     targetSection: {
       type: Object,
       default() {
         return null;
-      },
-    },
+      }
+    }
   },
 
   data() {
@@ -179,50 +179,50 @@ export default {
         sectionContentType: 1,
         categoryList: [],
         product: null,
-        productList: [],
+        productList: []
       },
       formRules: {
         sectionName: [
           {
             required: true,
             message: "Please enter a valid name",
-            trigger: "blur",
-          },
+            trigger: "blur"
+          }
         ],
         product: [
           {
             required: true,
             message: "Please select a product",
-            trigger: "blur",
-          },
+            trigger: "blur"
+          }
         ],
         productList: [
           {
             required: true,
             message: "Please select a product",
-            trigger: "blur",
-          },
+            trigger: "blur"
+          }
         ],
         categoryList: [
           {
             required: true,
             message: "Please select a category",
-            trigger: "blur",
-          },
-        ],
+            trigger: "blur"
+          }
+        ]
       },
-      formLabelWidth: "100px",
+      formLabelWidth: "100px"
     };
   },
 
   computed: {
     matchedCategoryList() {
       const result = [];
-      this.categoryList.forEach((item) => {
+      this.categoryList.forEach(item => {
         if (item.categoryType === this.formData.topicType) {
           result.push({
             label: item.categoryName,
-            value: item.categoryId,
+            value: item.categoryId
           });
         }
       });
@@ -231,16 +231,16 @@ export default {
 
     matchedProductList() {
       const result = [];
-      this.productList.forEach((item) => {
+      this.productList.forEach(item => {
         result.push({
           label: item.productName,
-          value: item.productId,
+          value: item.productId
         });
       });
       return result;
     },
 
-    ...mapGetters(["categoryList", "productList"]),
+    ...mapGetters(["categoryList", "productList"])
   },
 
   watch: {
@@ -255,49 +255,51 @@ export default {
         if (type == "ProductSection") {
           this.formData.sectionContentType = 2;
         }
-      },
+      }
     },
 
     "formData.topicType"() {
       this.formData.categoryList = [];
-    },
+    }
   },
 
   methods: {
     onSubmitClick() {
-      this.$refs.editSectionForm.validate((valid) => {
+      this.$refs.editSectionForm.validate(valid => {
         if (valid) {
           if (this.mode === sectionConfig.MODE.NEW) {
             const sectionId = uuidv4();
 
             const obj = {
               sectionId: sectionId,
-              sectionData: JSON.stringify(this.formData),
+              sectionData: JSON.stringify(this.formData)
             };
 
-            homeSectionApi.addSection(obj).then((res) => {
+            homeSectionApi.addSection(obj).then(res => {
               this.dialogVisible = false;
               this.getHomeSectionList();
               if (res.success) {
                 this.$message({
                   type: "success",
                   message: "Add Section Success",
+                  showClose: true
                 });
               }
             });
           } else if (this.mode === sectionConfig.MODE.EDIT) {
             const obj = {
               sectionId: this.formData.sectionId,
-              sectionData: JSON.stringify(this.formData),
+              sectionData: JSON.stringify(this.formData)
             };
 
-            homeSectionApi.updateSection(obj).then((res) => {
+            homeSectionApi.updateSection(obj).then(res => {
               this.dialogVisible = false;
               this.getHomeSectionList();
               if (res.success) {
                 this.$message({
                   type: "success",
                   message: "Update Section Success",
+                  showClose: true
                 });
               }
             });
@@ -325,9 +327,9 @@ export default {
         filename,
         formdata,
         {
-          headers: { "Content-Type": "multipart/form-data" },
+          headers: { "Content-Type": "multipart/form-data" }
         },
-        (image) => {
+        image => {
           if (image.url) {
             this.formData.sectionImage = image.url;
           }
@@ -353,8 +355,8 @@ export default {
 
     onUploadSuccess() {},
 
-    ...mapActions(["getHomeSectionList"]),
-  },
+    ...mapActions(["getHomeSectionList"])
+  }
 };
 </script>
 

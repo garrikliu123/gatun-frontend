@@ -25,6 +25,12 @@ const mutations = {
     [types.SET_HOME_SECTION_LIST](state, homeSectionList) {
         state.homeSectionList = homeSectionList;
     },
+    [types.SET_SHOPPING_CART](state, shoppingCart) {
+        state.shoppingCart = shoppingCart;
+    },
+    [types.SET_ORDER_HISTORY](state, orderHistory) {
+        state.orderHistory = orderHistory;
+    },
     [types.SET_USER](state, user) {
         state.user = user;
     },

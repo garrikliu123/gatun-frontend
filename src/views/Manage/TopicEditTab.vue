@@ -11,7 +11,7 @@
       style="width: 100%;"
       :data="
         topicList.filter(
-          (data) =>
+          data =>
             (!search || data.topicName.toLowerCase().includes(search.toLowerCase())) &&
             data.topicType === topicType
         )
@@ -73,12 +73,12 @@ export default {
       search: "",
       topicTableConfig,
       topicType: topicTableConfig.typeOptions[0].value,
-      targetTopic: null,
+      targetTopic: null
     };
   },
 
   computed: {
-    ...mapGetters(["topicList", "topicCategoryList"]),
+    ...mapGetters(["topicList", "topicCategoryList"])
   },
 
   methods: {
@@ -89,7 +89,7 @@ export default {
         topicName: "",
         topicType: topicTableConfig.typeOptions[0].value,
         categoryList: null,
-        topicImage: "",
+        topicImage: ""
       };
     },
 
@@ -100,7 +100,7 @@ export default {
 
       const list = [];
 
-      this.topicCategoryList.forEach((item) => {
+      this.topicCategoryList.forEach(item => {
         if (item.topicId == this.targetTopic.topicId) {
           list.push(item.categoryId);
         }
@@ -115,24 +115,25 @@ export default {
       this.$confirm(`Do you want to delete "${name}"? `, "Delete Action", {
         distinguishCancelAndClose: true,
         confirmButtonText: "Delete",
-        cancelButtonText: "Cancel",
+        cancelButtonText: "Cancel"
       }).then(() => {
         topicApi.deleteTopic(id).then(() => {
           this.getTopicList();
           this.$message({
             type: "success",
             message: "Delete Success",
+            showClose: true
           });
         });
       });
     },
 
-    ...mapActions(["getTopicList"]),
+    ...mapActions(["getTopicList"])
   },
 
   components: {
-    "ap-addtopic-dialog": AddTopicDialog,
-  },
+    "ap-addtopic-dialog": AddTopicDialog
+  }
 };
 </script>
 <style lang="less" scoped>

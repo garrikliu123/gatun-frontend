@@ -1,11 +1,15 @@
 * {
-  outline: none;
+    outline: none;
+}
+
+body {
+    overflow: visible !important;
 }
 
 button {
-  user-select: none;
+    user-select: none;
 }
 
 .ap-section {
-  margin-bottom: 20px;
+    margin-bottom: 20px;
 }

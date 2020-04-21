@@ -1,9 +1,14 @@
 <template>
   <div id="app">
     <ap-page-container v-loading.fullscreen.lock="fullScreenLoading">
-      <keep-alive>
+      <template v-if="$route.meta.keepAlive">
+        <keep-alive>
+          <router-view></router-view>
+        </keep-alive>
+      </template>
+      <template v-else>
         <router-view></router-view>
-      </keep-alive>
+      </template>
     </ap-page-container>
   </div>
 </template>

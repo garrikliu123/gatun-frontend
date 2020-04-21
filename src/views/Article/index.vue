@@ -74,8 +74,12 @@ export default {
   margin-top: 20px;
 
   .el-tiptap-editor__menu-bar {
-    height: 2px;
+    height: 0px;
     overflow: hidden;
+  }
+
+  .el-tooltip {
+    display: none;
   }
 
   .el-tiptap-editor__menu-bar::before {

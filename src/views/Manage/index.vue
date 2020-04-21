@@ -1,17 +1,32 @@
 <template>
   <div class="ap-manage-page">
-    <el-tabs class="header-tabs" v-model="activeTab">
-      <el-tab-pane class="manage-panel" label="Manage Product" name="1">
+    <el-tabs
+      class="header-tabs"
+      v-model="activeTab"
+    >
+      <el-tab-pane
+        class="manage-panel"
+        label="Manage Product"
+        name="1"
+      >
         <ap-manage-product></ap-manage-product>
       </el-tab-pane>
-      <el-tab-pane class="manage-panel" label="Manage Category" name="2">
+      <el-tab-pane
+        class="manage-panel"
+        label="Manage Category"
+        name="2"
+      >
         <ap-manage-category></ap-manage-category>
       </el-tab-pane>
-      <el-tab-pane class="manage-panel" label="Manage Site Page" name="3">
+      <el-tab-pane
+        class="manage-panel"
+        label="Manage Site Page"
+        name="3"
+      >
         <ap-manage-site></ap-manage-site>
       </el-tab-pane>
-      <el-tab-pane class="manage-panel" label="Order History" name="5">Order History</el-tab-pane>
-      <el-tab-pane class="manage-panel" label="User List" name="6">User List</el-tab-pane>
+      <!-- <el-tab-pane class="manage-panel" label="Order History" name="5">Order History</el-tab-pane> -->
+      <!-- <el-tab-pane class="manage-panel" label="User List" name="6">User List</el-tab-pane> -->
     </el-tabs>
   </div>
 </template>

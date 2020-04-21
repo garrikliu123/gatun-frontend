@@ -92,6 +92,8 @@ export default {
       this.mode = productConfig.MODE.EDIT;
       this.$refs.addProductDialog.dialogVisible = true;
       product.productImageList = JSON.parse(product.productImages);
+      product.productFileList = JSON.parse(product.productFiles);
+      product.productOptionList = JSON.parse(product.productOptions);
 
       product.productCategory = [];
       product.productApplication = [];
@@ -121,7 +123,8 @@ export default {
           this.getProductList();
           this.$message({
             type: "success",
-            message: "Delete Success"
+            message: "Delete Success",
+            showClose: true
           });
         });
       });

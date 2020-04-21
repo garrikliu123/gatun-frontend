@@ -11,7 +11,7 @@
       style="width: 100%;"
       :data="
         homeSectionList.filter(
-          (data) =>
+          data =>
             (!search || data.sectionName.toLowerCase().includes(search.toLowerCase())) &&
             data.sectionType === sectionType
         )
@@ -74,12 +74,12 @@ export default {
       mode: sectionConfig.MODE.NEW,
       sectionType: sectionTableConfig.sectionTypeOptions[0].value,
       sectionTableConfig,
-      targetSection: null,
+      targetSection: null
     };
   },
 
   computed: {
-    ...mapGetters(["homeSectionList"]),
+    ...mapGetters(["homeSectionList"])
   },
 
   methods: {
@@ -94,7 +94,7 @@ export default {
         sectionContentType: 1,
         categoryList: [],
         product: null,
-        productList: [],
+        productList: []
       };
     },
 
@@ -110,24 +110,25 @@ export default {
       this.$confirm(`Do you want to delete "${name}"? `, "Delete Action", {
         distinguishCancelAndClose: true,
         confirmButtonText: "Delete",
-        cancelButtonText: "Cancel",
+        cancelButtonText: "Cancel"
       }).then(() => {
         homeSectionApi.deleteSection(id).then(() => {
           this.getHomeSectionList();
           this.$message({
             type: "success",
             message: "Delete Success",
+            showClose: true
           });
         });
       });
     },
 
-    ...mapActions(["getHomeSectionList"]),
+    ...mapActions(["getHomeSectionList"])
   },
 
   components: {
-    "ap-addsection-dialog": AddSectionDialog,
-  },
+    "ap-addsection-dialog": AddSectionDialog
+  }
 };
 </script>
 

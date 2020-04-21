@@ -1,19 +1,21 @@
 <template>
   <div class="ap-tab-display">
-    <el-tabs
-      v-model="activeTab"
-      type="border-card"
-    >
+    <el-tabs v-model="activeTab" type="border-card">
       <el-tab-pane
         v-for="(item, index) in contentList"
         :label="item.label"
         :name="index.toString()"
         :key="index"
       >
-        <ap-texteditor
-          :readonly="true"
-          :value="item.content"
-        ></ap-texteditor>
+        <template v-if="item.label == 'FILES'">
+          <div class="file-link" v-for="(file, index) in item.content" :key="index">
+            <i class="el-icon-document"></i>
+            <el-link type="primary" :href="file.url" target="_blank">{{ file.name }}</el-link>
+          </div>
+        </template>
+        <template v-else>
+          <ap-texteditor :readonly="true" :value="item.content"></ap-texteditor>
+        </template>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -68,10 +70,10 @@ export default {
           });
         }
 
-        if (product.productDocument) {
+        if (product.productFileList) {
           list.push({
-            label: "DOCUMENT",
-            content: product.productDocument
+            label: "FILES",
+            content: product.productFileList
           });
         }
 
@@ -94,9 +96,24 @@ export default {
 
 <style lang="less">
 .ap-tab-display {
+  .file-link {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 8px;
+
+    i {
+      margin-right: 10px;
+    }
+  }
+
   .el-tiptap-editor__menu-bar {
-    height: 2px;
+    height: 0px;
     overflow: hidden;
+  }
+
+  .el-tooltip {
+    display: none;
   }
 
   .el-tiptap-editor__menu-bar::before {

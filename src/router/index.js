@@ -9,6 +9,8 @@ import Article from 'views/Article';
 import Product from 'views/Product';
 import Search from 'views/SearchResult';
 import Section from 'views/ProductList';
+import Account from 'views/Account';
+import Checkout from 'views/Checkout';
 
 Vue.use(VueRouter);
 
@@ -38,6 +40,9 @@ const routes = [{
         path: '/product/:productId',
         component: Product,
         props: true,
+        meta: {
+            keepAlive: false
+        }
     },
     {
         path: '/section/:sectionId',
@@ -68,6 +73,17 @@ const routes = [{
         component: Search,
         props: true,
     },
+    {
+        path: '/account',
+        component: Account,
+    },
+    {
+        path: '/checkout',
+        component: Checkout,
+        meta: {
+            keepAlive: false
+        }
+    },
     // No Match 没有匹配路径，重定向到首页
     {
         path: '*',
@@ -82,6 +98,10 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
+    if (to.meta.keepAlive !== false) {
+        to.meta.keepAlive = true;
+    }
+
     const params = to.params;
     const fullPath = to.fullPath;
 

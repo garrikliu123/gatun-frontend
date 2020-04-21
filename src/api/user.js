@@ -48,11 +48,20 @@ function getUserByEmail(userEmail) {
     });
 }
 
+function getUserById(userId) {
+    return axios.get(BASE_URL + 'getUserById', {
+        params: {
+            userId,
+        }
+    });
+}
+
 export default {
     addUser,
     getUserList,
     updateUser,
     deleteUser,
     login,
-    getUserByEmail
+    getUserByEmail,
+    getUserById
 }

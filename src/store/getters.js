@@ -39,6 +39,14 @@ export const topicCategoryList = (state) => {
     return state.topicCategoryList
 }
 
+export const shoppingCart = (state) => {
+    return state.shoppingCart
+}
+
+export const orderHistory = (state) => {
+    return state.orderHistory
+}
+
 export const homeSectionList = (state) => {
     const list = [];
 

@@ -35,11 +35,11 @@ axios.interceptors.response.use(
 
 
         if (res.data && res.data.success !== true) {
+            console.log(res.data)
             Message({
                 showClose: true,
                 message: res.data.errMsg,
                 type: "error",
-                duration: 0
             });
         }
 

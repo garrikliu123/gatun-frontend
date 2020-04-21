@@ -7,8 +7,11 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import format from 'vue-text-format';
+import locale from 'element-ui/lib/locale/lang/en';
 
-Vue.use(ElementUI);
+Vue.use(ElementUI, {
+    locale
+});
 Vue.use(ElementTiptapPlugin, {});
 Vue.use(format);
 

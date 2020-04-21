@@ -46,6 +46,18 @@
           ></el-option>
         </el-select>
       </el-form-item>
+
+      <el-form-item label="Options" :label-width="formLabelWidth" prop="productApplication">
+        <el-select
+          class="form-item product-options"
+          v-model="formData.productOptionList"
+          multiple
+          filterable
+          allow-create
+          default-first-option
+          no-data-text="You can enter an option for this product"
+        ></el-select>
+      </el-form-item>
     </el-form>
 
     <!-- Pictures -->
@@ -53,7 +65,7 @@
       class="dialog-picture-upload"
       action=""
       :http-request="onUploadImage"
-      :before-upload="beforeUpload"
+      :before-upload="beforeUploadImage"
       :on-success="onUploadSuccess"
       :on-remove="onImageRemove"
       :file-list="formData.productImageList"
@@ -84,8 +96,26 @@
         <ap-texteditor v-model="formData.productVideo" />
       </el-tab-pane>
 
+      <!-- Files -->
+      <el-tab-pane label="Files" name="5">
+        <el-upload
+          multiple
+          action=""
+          :http-request="onUploadFile"
+          :before-upload="beforeUploadFile"
+          :before-remove="beforeFileRemove"
+          :on-remove="onFileRemove"
+          :file-list="formData.productFileList"
+        >
+          <el-button size="small" type="primary">Upload File</el-button>
+        </el-upload>
+      </el-tab-pane>
+
+      <!-- Parts -->
+      <el-tab-pane label="Parts" name="6"> </el-tab-pane>
+
       <!-- Warrant -->
-      <el-tab-pane label="Warrant" name="5">
+      <el-tab-pane label="Warrant" name="7">
         <ap-texteditor v-model="formData.productWarranty" />
       </el-tab-pane>
     </el-tabs>
@@ -109,14 +139,14 @@ import { editProductForm as testFormData } from "common/config/testData";
 export default {
   props: {
     mode: {
-      required: true,
+      required: true
     },
     targetProduct: {
       type: Object,
       default() {
         return null;
-      },
-    },
+      }
+    }
   },
   data() {
     return {
@@ -132,42 +162,45 @@ export default {
         productFeatures: "",
         productPrice: "",
         productCategory: [],
+        productFileList: [],
+        productParts: [],
         productApplication: [],
         productParameter: [],
-        productImageList: [],
+        productOptionList: [],
+        productImageList: []
       },
       formRules: {
         productName: [
           {
             required: true,
             message: "Please enter a valid name",
-            trigger: "blur",
-          },
+            trigger: "blur"
+          }
         ],
         productPrice: [
           {
             required: true,
             message: "Please enter a valid price",
-            trigger: "blur",
+            trigger: "blur"
           },
           {
             validator: checkDouble("Please enter a valid number with two decimal places"),
-            trigger: "blur",
-          },
-        ],
+            trigger: "blur"
+          }
+        ]
       },
-      formLabelWidth: "100px",
+      formLabelWidth: "100px"
     };
   },
 
   computed: {
     categoryListByProduct() {
       const result = [];
-      this.categoryList.forEach((category) => {
+      this.categoryList.forEach(category => {
         if (category.categoryType == "Product") {
           result.push({
             label: category.categoryName,
-            value: category.categoryId,
+            value: category.categoryId
           });
         }
       });
@@ -175,11 +208,11 @@ export default {
     },
     categoryListByApplication() {
       const result = [];
-      this.categoryList.forEach((category) => {
+      this.categoryList.forEach(category => {
         if (category.categoryType == "Applications") {
           result.push({
             label: category.categoryName,
-            value: category.categoryId,
+            value: category.categoryId
           });
         }
       });
@@ -187,17 +220,17 @@ export default {
     },
     categoryListByParamter() {
       const result = [];
-      this.categoryList.forEach((category) => {
+      this.categoryList.forEach(category => {
         if (category.categoryType == "Parameters") {
           result.push({
             label: category.categoryName,
-            value: category.categoryId,
+            value: category.categoryId
           });
         }
       });
       return result;
     },
-    ...mapGetters(["categoryList"]),
+    ...mapGetters(["categoryList"])
   },
 
   watch: {
@@ -205,36 +238,40 @@ export default {
       if (product) {
         Object.assign(this.formData, product);
       }
-    },
+    }
   },
 
   methods: {
     onSubmitClick() {
-      this.$refs.editProductForm.validate((valid) => {
+      this.$refs.editProductForm.validate(valid => {
         if (valid) {
           this.formData.productImages = JSON.stringify(this.formData.productImageList);
+          this.formData.productOptions = JSON.stringify(this.formData.productOptionList);
+          this.formData.productFiles = JSON.stringify(this.formData.productFileList);
           if (this.mode === productConfig.MODE.NEW) {
             const productId = uuidv4();
             this.formData.productId = productId;
 
-            productApi.addProduct(this.formData).then((res) => {
+            productApi.addProduct(this.formData).then(res => {
               this.dialogVisible = false;
               this.getProductList();
               if (res.success) {
                 this.$message({
                   type: "success",
                   message: "Add Product Success",
+                  showClose: true
                 });
               }
             });
           } else if (this.mode === productConfig.MODE.EDIT) {
-            productApi.updateProduct(this.formData).then((res) => {
+            productApi.updateProduct(this.formData).then(res => {
               this.dialogVisible = false;
               this.getProductList();
               if (res.success) {
                 this.$message({
                   type: "success",
                   message: "Update Product Success",
+                  showClose: true
                 });
               }
             });
@@ -243,35 +280,42 @@ export default {
       });
     },
 
-    onUploadImage(req) {
-      let filetype = "";
-      if (req.file.type === "image/png") {
-        filetype = "png";
-      } else {
-        filetype = "jpg";
-      }
-
-      // 重命名要上传的文件
-      const filename = uuidv4() + "." + filetype;
-
+    onUploadFile(req) {
+      const filename = req.file.name;
       const formdata = new FormData();
-
       formdata.append("file", req.file);
 
       uploadImage(
         filename,
         formdata,
         {
-          headers: { "Content-Type": "multipart/form-data" },
+          headers: { "Content-Type": "multipart/form-data" }
         },
-        (image) => {
+        file => {
+          this.formData.productFileList.push(file);
+        }
+      );
+    },
+
+    onUploadImage(req) {
+      const filename = req.file.name;
+      const formdata = new FormData();
+      formdata.append("file", req.file);
+
+      uploadImage(
+        filename,
+        formdata,
+        {
+          headers: { "Content-Type": "multipart/form-data" }
+        },
+        image => {
           this.formData.productImageList.push(image);
         }
       );
     },
 
     // 验证文件合法性
-    beforeUpload(file) {
+    beforeUploadImage(file) {
       const isJPG = file.type === "image/jpeg" || file.type === "image/png";
       const isLt2M = file.size / 1024 / 1024 < 5;
 
@@ -284,6 +328,17 @@ export default {
       }
 
       return isJPG && isLt2M;
+    },
+
+    // 验证文件合法性
+    beforeUploadFile(file) {
+      const isLt2M = file.size / 1024 / 1024 < 10;
+
+      if (!isLt2M) {
+        this.$message.error("File size should less than 10MB");
+      }
+
+      return isLt2M;
     },
 
     onUploadSuccess() {},
@@ -301,12 +356,29 @@ export default {
       }
     },
 
-    ...mapActions(["getProductList"]),
+    onFileRemove(target) {
+      let targetIndex = null;
+      this.formData.productFileList.forEach((item, index) => {
+        if (item.name === target.name) {
+          targetIndex = index;
+        }
+      });
+
+      if (targetIndex !== null) {
+        this.formData.productFileList.splice(targetIndex, 1);
+      }
+    },
+
+    beforeFileRemove(file) {
+      return this.$confirm(`Do you want to delete ${file.name}？`);
+    },
+
+    ...mapActions(["getProductList"])
   },
 
   components: {
-    "ap-texteditor": TextEditor,
-  },
+    "ap-texteditor": TextEditor
+  }
 };
 </script>
 

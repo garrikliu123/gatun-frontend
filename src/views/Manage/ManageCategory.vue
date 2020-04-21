@@ -112,7 +112,8 @@ export default {
           this.getCategoryList();
           this.$message({
             type: "success",
-            message: "Delete Success"
+            message: "Delete Success",
+            showClose: true
           });
         });
       });

@@ -13,6 +13,8 @@ const state = {
     topicList: [],
     topicCategoryList: [],
     homeSectionList: [],
+    shoppingCart: [],
+    orderHistory: [],
     user: null
 }
 

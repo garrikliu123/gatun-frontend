@@ -37,6 +37,19 @@ export function validateEmail(rule, value, callback) {
 }
 
 
+/* 验证姓名 */
+export function validateName(rule, value, callback) {
+    const reg = /^[a-zA-Z]{0,50}$/;
+    setTimeout(() => {
+        if (!reg.test(value)) {
+            return callback(new Error('Please enter a valid name'));
+        } else {
+            callback()
+        }
+    }, 100)
+}
+
+
 /* 合法手机号 */
 export function validatePhone(rule, value, callback) {
     const phoneReg = /^[1][3,4,5,7,8][0-9]{9}$/

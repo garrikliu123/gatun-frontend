@@ -67,14 +67,14 @@ import topicTableConfig from "./config/topic_table_config.js";
 export default {
   props: {
     mode: {
-      required: true,
+      required: true
     },
     targetTopic: {
       type: Object,
       default() {
         return null;
-      },
-    },
+      }
+    }
   },
   data() {
     return {
@@ -85,42 +85,42 @@ export default {
         topicName: "",
         topicType: topicTableConfig.typeOptions[0].value,
         topicImage: "",
-        categoryList: [],
+        categoryList: []
       },
       formRules: {
         topicName: [
           {
             required: true,
             message: "Please enter a valid name",
-            trigger: "blur",
-          },
+            trigger: "blur"
+          }
         ],
         categoryList: [
           {
             required: true,
             message: "Please select a category",
-            trigger: "blur",
-          },
-        ],
+            trigger: "blur"
+          }
+        ]
       },
-      formLabelWidth: "100px",
+      formLabelWidth: "100px"
     };
   },
 
   computed: {
     matchedCategoryList() {
       const result = [];
-      this.categoryList.forEach((item) => {
+      this.categoryList.forEach(item => {
         if (item.categoryType === this.formData.topicType) {
           result.push({
             label: item.categoryName,
-            value: item.categoryId,
+            value: item.categoryId
           });
         }
       });
       return result;
     },
-    ...mapGetters(["categoryList"]),
+    ...mapGetters(["categoryList"])
   },
 
   watch: {
@@ -133,34 +133,36 @@ export default {
       if (this.mode == topicConfig.MODE.NEW) {
         this.formData.categoryList = [];
       }
-    },
+    }
   },
 
   methods: {
     onSubmitClick() {
-      this.$refs.editTopicForm.validate((valid) => {
+      this.$refs.editTopicForm.validate(valid => {
         if (valid) {
           if (this.mode === topicConfig.MODE.NEW) {
             const topicId = uuidv4();
             this.formData.topicId = topicId;
-            topicApi.addTopic(this.formData).then((res) => {
+            topicApi.addTopic(this.formData).then(res => {
               this.dialogVisible = false;
               this.getTopicList();
               if (res.success) {
                 this.$message({
                   type: "success",
                   message: "Add Topic Success",
+                  showClose: true
                 });
               }
             });
           } else if (this.mode === topicConfig.MODE.EDIT) {
-            topicApi.updateTopic(this.formData).then((res) => {
+            topicApi.updateTopic(this.formData).then(res => {
               this.dialogVisible = false;
               this.getTopicList();
               if (res.success) {
                 this.$message({
                   type: "success",
                   message: "Update Topic Success",
+                  showClose: true
                 });
               }
             });
@@ -188,9 +190,9 @@ export default {
         filename,
         formdata,
         {
-          headers: { "Content-Type": "multipart/form-data" },
+          headers: { "Content-Type": "multipart/form-data" }
         },
-        (image) => {
+        image => {
           if (image.url) {
             this.formData.topicImage = image.url;
           }
@@ -216,8 +218,8 @@ export default {
 
     onUploadSuccess() {},
 
-    ...mapActions(["getTopicList"]),
-  },
+    ...mapActions(["getTopicList"])
+  }
 };
 </script>
 <style lang="less">

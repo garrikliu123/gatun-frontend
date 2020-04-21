@@ -4,9 +4,7 @@
       <!-- Carousel 轮播图 -->
       <el-carousel class="ap-carousel" height="500px">
         <el-carousel-item v-for="item in matchedProduct.productImageList || []" :key="item.name">
-          <div class="carousel_img_container">
-            <img class="carousel_img" :src="item.url" />
-          </div>
+          <el-image class="carousel_img" fit="contain" :src="item.url"></el-image>
         </el-carousel-item>
       </el-carousel>
       <div class="right-group">
@@ -14,7 +12,7 @@
           {{ matchedProduct.productName }}
         </div>
         <el-divider content-position="right"
-          ><i class="ap-nav-icon el-icon-shopping-cart-2"></i
+          ><i class="ap-nav-icon el-icon-shopping-cart-2" style="font-size: 1.2em;"></i
         ></el-divider>
         <div class="price" v-if="matchedProduct.productPrice >= 1000" v-format="'CAD $#,##0.00'">
           {{ matchedProduct.productPrice }}
@@ -22,42 +20,83 @@
         <div class="price" v-else v-format="'CAD $##0.00'">
           {{ matchedProduct.productPrice }}
         </div>
+        <el-select
+          v-if="productOptions.length > 0"
+          class="option-select"
+          v-model="optionChoose"
+          placeholder="Please select an option"
+          size="small"
+        >
+          <el-option
+            v-for="item in productOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+          </el-option>
+        </el-select>
         <el-input-number class="count" v-model="count" :min="1" :max="100"></el-input-number>
-        <el-button type="success" class="button">ADD TO CART</el-button>
+        <el-button type="success" class="button" @click="onAddClick">ADD TO CART</el-button>
       </div>
     </div>
     <ap-tab-display class="ap-tab-display" :product="matchedProduct"></ap-tab-display>
   </div>
 </template>
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import TabDisplay from "./TabDisplay";
 export default {
   props: {
     productId: {
-      default: "",
-    },
+      default: ""
+    }
   },
 
   data() {
     return {
       count: 1,
+      optionChoose: ""
     };
   },
 
   computed: {
     matchedProduct() {
-      const product = this.productList.find((product) => {
+      const product = this.productList.find(product => {
         if (product.productId === this.productId) {
           product.productImageList = JSON.parse(product.productImages);
+          product.productFileList = JSON.parse(product.productFiles);
+          product.productOptionList = JSON.parse(product.productOptions);
           return true;
         }
       }) || {
-        success: false,
+        success: false
       };
       return product;
     },
-    ...mapGetters(["productList"]),
+    imageList() {
+      let list = [];
+      if (this.matchedProduct.productImageList) {
+        list = this.matchedProduct.productImageList.map(image => {
+          return image.url;
+        });
+      }
+
+      return list;
+    },
+    productOptions() {
+      const list = [];
+      const productOptionList = this.matchedProduct.productOptionList;
+      if (productOptionList && productOptionList.length > 0) {
+        productOptionList.forEach(item => {
+          list.push({
+            label: item,
+            value: item
+          });
+        });
+      }
+      return list;
+    },
+    ...mapGetters(["productList", "shoppingCart"])
   },
 
   watch: {
@@ -66,11 +105,38 @@ export default {
         this.$router.push("/");
       }
     },
+    productOptions: {
+      immediate: true,
+      deep: true,
+      handler(list) {
+        if (list.length > 0) {
+          this.optionChoose = list[0].value;
+        }
+      }
+    }
+  },
+
+  methods: {
+    onAddClick() {
+      this.addProudctToCart({
+        productId: this.matchedProduct.productId,
+        amount: this.count,
+        option: this.optionChoose
+      });
+
+      this.$message({
+        type: "success",
+        message: "Add Success!",
+        showClose: true
+      });
+    },
+
+    ...mapActions(["addProudctToCart"])
   },
 
   components: {
-    "ap-tab-display": TabDisplay,
-  },
+    "ap-tab-display": TabDisplay
+  }
 };
 </script>
 <style lang="less">
@@ -79,11 +145,6 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-  .carousel_img_container {
-    .carousel_img {
-      width: 100%;
-    }
   }
 
   .el-carousel {
@@ -139,6 +200,10 @@ export default {
 
     .count {
       margin-bottom: 30px;
+    }
+
+    .option-select {
+      margin-bottom: 20px;
     }
   }
 
