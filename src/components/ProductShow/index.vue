@@ -78,7 +78,6 @@ export default {
   }
 
   .product-img {
-    width: 100%;
     height: 100%;
   }
 

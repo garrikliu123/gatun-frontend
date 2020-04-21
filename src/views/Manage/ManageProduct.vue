@@ -2,7 +2,10 @@
   <div class="ap-manage-product">
     <!-- Add new product button 添加新产品按钮 -->
     <div class="add-btn-container">
-      <el-button type="primary" @click="handleProductAdd">ADD PRODUCT</el-button>
+      <el-button
+        type="primary"
+        @click="handleProductAdd"
+      >ADD PRODUCT</el-button>
     </div>
 
     <!-- Product List Table 商品列表 -->
@@ -27,15 +30,24 @@
 
       <!-- Product Operation Column 商品操作列（修改，删除） -->
       <el-table-column align="right">
-        <template slot="header" slot-scope="scope">
-          <el-input v-model="search" placeholder="Please enter keyword" />
+        <template
+          slot="header"
+          slot-scope="scope"
+        >
+          <el-input
+            v-model="search"
+            placeholder="Please enter keyword"
+          />
           <span style="display: none">{{ scope.$index }}</span>
         </template>
         <template slot-scope="scope">
           <el-button @click="handleProductEdit(scope.row)">
             Edit
           </el-button>
-          <el-button type="danger" @click="handleProductDelete(scope.row)">
+          <el-button
+            type="danger"
+            @click="handleProductDelete(scope.row)"
+          >
             Delete
           </el-button>
         </template>
@@ -85,7 +97,9 @@ export default {
         productCategory: [],
         productApplication: [],
         productParameter: [],
-        productImageList: []
+        productImageList: [],
+        productFileList: [],
+        productOptionList: []
       };
     },
     handleProductEdit(product) {
@@ -100,11 +114,20 @@ export default {
       product.productParameter = [];
 
       this.productCategoryList.forEach(item => {
-        if (product.productId == item.productId && item.categoryType == "Product") {
+        if (
+          product.productId == item.productId &&
+          item.categoryType == "Product"
+        ) {
           product.productCategory.push(item.categoryId);
-        } else if (product.productId == item.productId && item.categoryType == "Applications") {
+        } else if (
+          product.productId == item.productId &&
+          item.categoryType == "Applications"
+        ) {
           product.productApplication.push(item.categoryId);
-        } else if (product.productId == item.productId && item.categoryType == "Parameters") {
+        } else if (
+          product.productId == item.productId &&
+          item.categoryType == "Parameters"
+        ) {
           product.productParameter.push(item.categoryId);
         }
       });
@@ -114,11 +137,15 @@ export default {
       const productId = product.productId;
       const productName = product.productName;
 
-      this.$confirm(`Do you want to delete "${productName}"? `, "Delete Action", {
-        distinguishCancelAndClose: true,
-        confirmButtonText: "Delete",
-        cancelButtonText: "Cancel"
-      }).then(() => {
+      this.$confirm(
+        `Do you want to delete "${productName}"? `,
+        "Delete Action",
+        {
+          distinguishCancelAndClose: true,
+          confirmButtonText: "Delete",
+          cancelButtonText: "Cancel"
+        }
+      ).then(() => {
         productApi.deleteProduct(productId).then(() => {
           this.getProductList();
           this.$message({

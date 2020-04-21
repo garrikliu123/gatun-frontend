@@ -178,11 +178,6 @@ export default {
     justify-content: center;
   }
 
-  .carousel_img {
-    height: 100%;
-    width: 100%;
-  }
-
   .el-carousel {
     .el-carousel__indicators {
       width: 100% !important;
@@ -207,6 +202,11 @@ export default {
       margin-right: 60px;
       box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.12), 0 0 6px 0 rgba(0, 0, 0, 0.04);
       border-radius: 4px;
+
+      .el-image {
+        height: 100% !important;
+        width: 100% !important;
+      }
     }
 
     .right-group {
