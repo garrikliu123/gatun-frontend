@@ -7,10 +7,7 @@
   >
     <div class="product-img-container">
       <div class="image-cover"></div>
-      <ap-image
-        class="product-img"
-        :imgUrl="imgUrl"
-      ></ap-image>
+      <ap-image class="product-img" :imgUrl="imgUrl"></ap-image>
     </div>
 
     <div class="divider-container">
@@ -22,11 +19,9 @@
     <p class="product-title">{{ title }}</p>
     <p class="product-price">${{ price }}</p>
 
-    <el-button
-      class="product-add-button"
-      type="primary"
-      @click.stop="$emit('addCartClick')"
-    >ADD TO CART</el-button>
+    <el-button class="product-add-button" type="primary" @click.stop="$emit('addCartClick')"
+      >ADD TO CART</el-button
+    >
   </el-card>
 </template>
 <script>
@@ -91,10 +86,10 @@ export default {
     overflow: hidden;
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 3;
     margin: 0;
     margin-top: 10px;
-    height: 55px;
+    height: 80px;
     font-weight: bold;
     padding: 0 10px;
   }

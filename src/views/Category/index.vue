@@ -2,10 +2,7 @@
   <div class="ap-category">
     <h1 class="title">{{ title }}</h1>
     <el-divider content-position="right">
-      <i
-        class="el-icon-shopping-bag-2"
-        style="font-size: 1.2em;"
-      ></i>
+      <i class="el-icon-shopping-bag-2" style="font-size: 1.2em;"></i>
     </el-divider>
     <div class="topic-list">
       <div
@@ -15,10 +12,7 @@
         @click="onCardClicked(topic.topicName)"
       >
         <el-card class="topic-card">
-          <img
-            :src="topic.topicImage"
-            class="image"
-          />
+          <img :src="topic.topicImage" class="image" />
           <div class="card-title">
             <div class="title-text">{{ topic.topicName }}</div>
           </div>
@@ -75,6 +69,16 @@ export default {
           list.push(item);
         }
       });
+
+      list.sort((a, b) => {
+        let aIndex = parseInt(a.topicName.split("-")[0], 10);
+        let bIndex = parseInt(b.topicName.split("-")[0], 10);
+        aIndex = isNaN(aIndex) ? 0 : aIndex;
+        bIndex = isNaN(bIndex) ? 0 : bIndex;
+
+        return aIndex - bIndex;
+      });
+
       return list;
     },
 
@@ -122,11 +126,13 @@ export default {
 
     .el-card__body {
       padding: 0px;
+      height: 100%;
     }
 
     .image {
       display: block;
       width: 100%;
+      height: 100%;
     }
     .card-title {
       position: absolute;
