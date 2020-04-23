@@ -1,7 +1,12 @@
 <template>
   <div class="ap-home-page">
     <!-- Carousel 轮播图 -->
-    <el-carousel class="ap-carousel" trigger="click" height="500px">
+    <el-carousel
+      class="ap-carousel"
+      :class="{ 'ap-carousel_phone': isPhoneSize }"
+      trigger="click"
+      :height="isPhoneSize ? '160px' : '500px'"
+    >
       <el-carousel-item
         v-for="(item, index) in carouselList"
         :key="index"
@@ -40,7 +45,7 @@ export default {
   computed: {
     carouselList() {
       const carouselList = [];
-      this.homeSectionList.forEach((item) => {
+      this.homeSectionList.forEach(item => {
         if (item.sectionType == "Carousel") {
           carouselList.push(item);
         }
@@ -50,7 +55,7 @@ export default {
     },
     billboardList() {
       const list = [];
-      this.homeSectionList.forEach((item) => {
+      this.homeSectionList.forEach(item => {
         if (item.sectionType == "Billboard") {
           list.push(item);
         }
@@ -60,16 +65,16 @@ export default {
     },
     productSection() {
       const sectionList = [];
-      this.homeSectionList.forEach((item) => {
+      this.homeSectionList.forEach(item => {
         if (item.sectionType == "ProductSection") {
           sectionList.push(item);
         }
       });
 
-      sectionList.forEach((item) => {
+      sectionList.forEach(item => {
         const list = [];
         const productList = item.productList;
-        productList.forEach((id) => {
+        productList.forEach(id => {
           if (this.productListObj[id]) {
             const p = this.productListObj[id];
             p.productImageList = JSON.parse(p.productImages);
@@ -82,7 +87,7 @@ export default {
 
       return sectionList;
     },
-    ...mapGetters(["homeSectionList", "productList", "productListObj"]),
+    ...mapGetters(["homeSectionList", "productList", "productListObj", "isPhoneSize"])
   },
 
   methods: {
@@ -104,13 +109,13 @@ export default {
       } else if (item.sectionContentType == 3) {
         this.$router.push("/section/" + item.sectionId);
       }
-    },
+    }
   },
 
   components: {
     "ap-recommend-topic-list": apRecommendTopicList,
-    "ap-recommend-product-group": apRecommendProductGroup,
-  },
+    "ap-recommend-product-group": apRecommendProductGroup
+  }
 };
 </script>
 <style lang="less" scoped>
@@ -139,6 +144,16 @@ export default {
     margin: 40px 0 50px;
     .el-divider__text {
       font-size: 1.2em;
+    }
+  }
+
+  .ap-carousel_phone {
+    margin-top: 10px;
+    .carousel_img_container {
+      .carousel_img {
+        width: 100%;
+        object-fit: contain;
+      }
     }
   }
 }

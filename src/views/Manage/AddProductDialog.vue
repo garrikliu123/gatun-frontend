@@ -112,7 +112,7 @@
       </el-tab-pane>
 
       <!-- Parts -->
-      <el-tab-pane label="Parts" name="6"> </el-tab-pane>
+      <!-- <el-tab-pane label="Parts" name="6"> </el-tab-pane> -->
 
       <!-- Warrant -->
       <el-tab-pane label="Warrant" name="7">
@@ -254,7 +254,7 @@ export default {
 
             productApi.addProduct(this.formData).then(res => {
               this.dialogVisible = false;
-              // this.getProductList();
+              this.getProductList();
               if (res.success) {
                 this.$message({
                   type: "success",
@@ -266,7 +266,7 @@ export default {
           } else if (this.mode === productConfig.MODE.EDIT) {
             productApi.updateProduct(this.formData).then(res => {
               this.dialogVisible = false;
-              // this.getProductList();
+              this.getProductList();
               if (res.success) {
                 this.$message({
                   type: "success",

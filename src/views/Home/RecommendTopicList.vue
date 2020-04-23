@@ -11,20 +11,19 @@
 </template>
 <script>
 import apBillBoard from "components/Billboard";
-
 export default {
   props: {
     recommendTopicList: {
       type: Array,
       default: () => {
         return [];
-      },
-    },
+      }
+    }
   },
 
   components: {
-    "ap-billboard": apBillBoard,
-  },
+    "ap-billboard": apBillBoard
+  }
 };
 </script>
 <style lang="less" scoped>
@@ -33,6 +32,12 @@ export default {
   flex-direction: column;
   .ap-billboard {
     margin-top: 5px;
+  }
+}
+
+.is_phone {
+  .ap-recommend-topic-list {
+    margin: 5px 0 !important;
   }
 }
 </style>

@@ -34,6 +34,12 @@ const mutations = {
     [types.SET_USER](state, user) {
         state.user = user;
     },
+    [types.SET_SCREEN_WIDTH](state, screenWidth) {
+        state.screenWidth = screenWidth;
+    },
+    [types.SET_IS_PHONE_SIZE](state, isPhoneSize) {
+        state.isPhoneSize = isPhoneSize;
+    },
 }
 
 export default mutations;

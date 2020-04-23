@@ -1,19 +1,16 @@
 <template>
   <div class="product-list-container">
-    <h1
-      v-if="title"
-      class="product-list-title"
-    >{{ title }}</h1>
+    <h1 v-if="title" class="product-list-title">{{ title }}</h1>
     <div class="product-list">
-      <div
-        class="product-show-container"
-        v-for="(product, index) in productList"
-        :key="index"
-      >
+      <div class="product-show-container" v-for="(product, index) in productList" :key="index">
         <ap-product-show
           class="product-show"
           :title="product.productName"
-          :imgUrl="product.productImageList && product.productImageList[0] ? product.productImageList[0].url : ''"
+          :imgUrl="
+            product.productImageList && product.productImageList[0]
+              ? product.productImageList[0].url
+              : ''
+          "
           :price="product.productPrice"
           shadow="hover"
           @productClick="onProductClick(product.productId)"
@@ -52,10 +49,7 @@ export default {
       this.addProudctToCart({
         productId,
         amount: 1,
-        option:
-          productOptionList && productOptionList.length > 0
-            ? productOptionList[0]
-            : ""
+        option: productOptionList && productOptionList.length > 0 ? productOptionList[0] : ""
       });
 
       this.$message({
@@ -73,7 +67,7 @@ export default {
   }
 };
 </script>
-<style lang="less" scoped>
+<style lang="less">
 .product-list-container {
   .product-list-title {
     margin-bottom: 30px;
@@ -92,6 +86,26 @@ export default {
   .product-show {
     cursor: pointer;
     margin: 0 10px 10px 0px;
+  }
+}
+
+.is_phone {
+  .product-show-container {
+    flex: 0 0 50% !important;
+
+    .product-show {
+      margin: 0;
+      margin-bottom: 10px;
+      margin-right: 5px;
+      border: none;
+    }
+
+    .product-img-container {
+      height: 200px !important;
+      .el-image__inner {
+        object-fit: contain;
+      }
+    }
   }
 }
 </style>

@@ -15,7 +15,9 @@ const state = {
     homeSectionList: [],
     shoppingCart: [],
     orderHistory: [],
-    user: null
+    user: null,
+    screenWidth: undefined,
+    isPhoneSize: false,
 }
 
 export default state;

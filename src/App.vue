@@ -1,6 +1,9 @@
 <template>
   <div id="app">
-    <ap-page-container v-loading.fullscreen.lock="fullScreenLoading">
+    <ap-page-container
+      :class="{ is_phone: isPhoneSize }"
+      v-loading.fullscreen.lock="fullScreenLoading"
+    >
       <template v-if="$route.meta.keepAlive">
         <keep-alive>
           <router-view></router-view>
@@ -24,7 +27,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["fullScreenLoading"])
+    ...mapGetters(["fullScreenLoading", "isPhoneSize"])
   },
 
   mounted() {

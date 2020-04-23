@@ -1,80 +1,134 @@
 <template>
   <div class="ap-header">
-    <el-menu
-      class="ap-nav"
-      mode="horizontal"
-      :default-active="activeIndex"
-      @select="handleNavSelect"
-    >
-      <div class="ap-nav-logo__container">
-        <router-link to="/">
-          <h1 class="nav-title">GATUN</h1>
-        </router-link>
-        <!-- <img class="ap-nav-logo" src="~common/images/logo.png" alt="APERA" /> -->
-      </div>
-      <template v-for="(item, index) in navList">
-        <el-menu-item
-          v-if="item.onlyManager ? user && user.userType == 'manager' : true"
-          :key="index"
-          :index="index.toString()"
-        >
-          {{ item.title }}
-        </el-menu-item>
-      </template>
-
-      <el-autocomplete
-        class="ap-nav-search"
-        placeholder="Please enter keyword"
-        v-model="search"
-        :fetch-suggestions="querySearch"
-        :trigger-on-focus="false"
+    <template v-if="!isPhoneSize">
+      <el-menu
+        class="ap-nav"
+        mode="horizontal"
+        :default-active="activeIndex"
+        @select="handleNavSelect"
       >
-        <el-button
-          slot="append"
-          icon="el-icon-search"
-          @click="onSearchClick"
-        ></el-button>
-      </el-autocomplete>
-      <div class="ap-nav-icon__group">
-        <el-dropdown class="user">
-          <span class="el-dropdown-link">
-            <i class="ap-nav-icon el-icon-user-solid"></i>
-          </span>
-          <el-dropdown-menu
-            slot="dropdown"
-            v-if="!user"
+        <div class="ap-nav-logo__container">
+          <router-link to="/">
+            <div class="logo-container">
+              <img class="logo-image" :src="logoImage" alt="GATUN" />
+            </div>
+          </router-link>
+          <!-- <img class="ap-nav-logo" src="~common/images/logo.png" alt="APERA" /> -->
+        </div>
+        <template v-for="(item, index) in navList">
+          <el-menu-item
+            v-if="item.onlyManager ? user && user.userType == 'manager' : true"
+            :key="index"
+            :index="index.toString()"
           >
-            <el-dropdown-item @click.native="onUserClick('login')">Log In</el-dropdown-item>
-            <el-dropdown-item @click.native="onUserClick('register')">Register</el-dropdown-item>
-          </el-dropdown-menu>
-          <el-dropdown-menu
-            slot="dropdown"
-            v-else
-          >
-            <el-dropdown-item @click.native="$router.push('account')">My Account</el-dropdown-item>
-            <el-dropdown-item @click.native="onLogoutClick()">Log Out</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
-        <el-popover
-          placement="bottom-end"
-          width="500"
-          trigger="click"
+            {{ item.title }}
+          </el-menu-item>
+        </template>
+
+        <el-autocomplete
+          class="ap-nav-search"
+          placeholder="Please enter keyword"
+          v-model="search"
+          :fetch-suggestions="querySearch"
+          :trigger-on-focus="false"
         >
-          <ap-cart></ap-cart>
-          <i
-            slot="reference"
-            class="ap-nav-icon el-icon-shopping-cart-2"
-          ></i>
-        </el-popover>
+          <el-button slot="append" icon="el-icon-search" @click="onSearchClick"></el-button>
+        </el-autocomplete>
+        <div class="ap-nav-icon__group">
+          <el-dropdown class="user">
+            <span class="el-dropdown-link">
+              <i class="ap-nav-icon el-icon-user-solid"></i>
+            </span>
+            <el-dropdown-menu slot="dropdown" v-if="!user">
+              <el-dropdown-item @click.native="onUserClick('login')">Log In</el-dropdown-item>
+              <el-dropdown-item @click.native="onUserClick('register')">Register</el-dropdown-item>
+            </el-dropdown-menu>
+            <el-dropdown-menu slot="dropdown" v-else>
+              <el-dropdown-item @click.native="$router.push('account')"
+                >My Account</el-dropdown-item
+              >
+              <el-dropdown-item @click.native="onLogoutClick()">Log Out</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+          <el-popover placement="bottom-end" width="500" trigger="click">
+            <ap-cart></ap-cart>
+            <i slot="reference" class="ap-nav-icon el-icon-shopping-cart-2"></i>
+          </el-popover>
+        </div>
+      </el-menu>
+    </template>
+    <template v-else>
+      <div class="ap-title_phone">
+        <i @click="toggleMenu" class="ap-icon el-icon-menu"></i>
+        <div class="ap-nav-logo__container">
+          <router-link to="/">
+            <div class="logo-container">
+              <img class="logo-image" :src="logoImage" alt="GATUN" />
+            </div>
+          </router-link>
+          <!-- <img class="ap-nav-logo" src="~common/images/logo.png" alt="APERA" /> -->
+        </div>
+
+        <div class="ap-nav-icon__group">
+          <el-dropdown class="user">
+            <span class="el-dropdown-link">
+              <i class="ap-nav-icon el-icon-user-solid"></i>
+            </span>
+            <el-dropdown-menu slot="dropdown" v-if="!user">
+              <el-dropdown-item @click.native="onUserClick('login')">Log In</el-dropdown-item>
+              <el-dropdown-item @click.native="onUserClick('register')">Register</el-dropdown-item>
+            </el-dropdown-menu>
+            <el-dropdown-menu slot="dropdown" v-else>
+              <el-dropdown-item @click.native="$router.push('account')"
+                >My Account</el-dropdown-item
+              >
+              <el-dropdown-item @click.native="onLogoutClick()">Log Out</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+          <el-popover
+            placement="bottom-end"
+            :width="isPhoneSize ? screenWidth - 20 : 500"
+            trigger="click"
+          >
+            <ap-cart></ap-cart>
+            <i slot="reference" class="ap-nav-icon el-icon-shopping-cart-2"></i>
+          </el-popover>
+        </div>
       </div>
-    </el-menu>
-    <ap-login
-      ref="loginDialog"
-      :mode="loginMode"
-    ></ap-login>
+      <el-collapse-transition>
+        <el-menu
+          v-show="showMenu"
+          class="ap-nav_phone"
+          :default-active="activeIndex"
+          @select="handleNavSelect"
+        >
+          <el-autocomplete
+            class="ap-nav-search"
+            placeholder="Please enter keyword"
+            v-model="search"
+            :fetch-suggestions="querySearch"
+            :trigger-on-focus="false"
+          >
+            <el-button slot="append" icon="el-icon-search" @click="onSearchClick"></el-button>
+          </el-autocomplete>
+
+          <template v-for="(item, index) in navList">
+            <el-menu-item
+              v-if="item.onlyManager ? user && user.userType == 'manager' : true"
+              :key="index"
+              :index="index.toString()"
+            >
+              {{ item.title }}
+            </el-menu-item>
+          </template>
+        </el-menu>
+      </el-collapse-transition>
+    </template>
+    <ap-login ref="loginDialog" :mode="loginMode"></ap-login>
   </div>
 </template>
 <script>
+import logoImage from "common/images/header_logo.png";
 import { mapGetters, mapActions } from "vuex";
 import headerNavConfig from "common/config/header_nav_config";
 import LoginDialog from "views/Login";
@@ -85,12 +139,14 @@ export default {
       loginMode: "login",
       search: "",
       navList: headerNavConfig,
-      activeIndex: ""
+      activeIndex: "",
+      showMenu: false,
+      logoImage
     };
   },
 
   computed: {
-    ...mapGetters(["productList", "user"])
+    ...mapGetters(["productList", "user", "isPhoneSize", "screenWidth"])
   },
 
   watch: {
@@ -114,14 +170,16 @@ export default {
     handleNavSelect(key) {
       const targetNav = this.navList[key];
       this.$router.push(targetNav.link);
+
+      if (this.isPhoneSize) {
+        this.showMenu = false;
+      }
     },
 
     querySearch(queryString, cb) {
       const result = [];
       this.productList.forEach(item => {
-        const priority = item.productName
-          .toLowerCase()
-          .indexOf(queryString.toLowerCase());
+        const priority = item.productName.toLowerCase().indexOf(queryString.toLowerCase());
         if (priority >= 0) {
           result.push({
             value: item.productName,
@@ -164,6 +222,10 @@ export default {
     onLogoutClick() {
       this.logout();
       this.$router.push("home");
+    },
+
+    toggleMenu() {
+      this.showMenu = !this.showMenu;
     },
 
     ...mapActions(["logout"])
@@ -230,6 +292,36 @@ export default {
   .el-dropdown {
     color: #2c3e50;
     font-size: 16px;
+  }
+
+  .ap-title_phone {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-right: 10px;
+
+    .ap-icon {
+      font-size: 1.5em;
+      margin-right: 10px;
+    }
+  }
+
+  .ap-nav_phone {
+    width: 100% !important;
+    .ap-nav-search {
+      width: 100%;
+      max-width: none;
+      margin: 20px 0px;
+    }
+  }
+
+  .logo-container {
+    height: 60px;
+    .logo-image {
+      height: 100%;
+      width: 100%;
+      object-fit: contain;
+    }
   }
 }
 </style>

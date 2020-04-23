@@ -19,17 +19,23 @@ export default {
       type: Array,
       default: () => {
         return [];
-      },
-    },
+      }
+    }
   },
 
   components: {
-    "ap-product-list": apProductList,
-  },
+    "ap-product-list": apProductList
+  }
 };
 </script>
 <style lang="less" scoped>
 .ap-product-list {
   margin-top: 20px;
+}
+
+.is_phone {
+  .ap-recommend-product-group {
+    margin: 10px 0 !important;
+  }
 }
 </style>

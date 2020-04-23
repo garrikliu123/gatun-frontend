@@ -2,58 +2,29 @@
   <div class="my-info">
     <div class="edit-info-form">
       <h2>Edit Account Information</h2>
-      <el-form
-        class="account-form"
-        :model="formData"
-        :rules="formRules"
-        ref="editInfoForm"
-      >
+      <el-form class="account-form" :model="formData" :rules="formRules" ref="editInfoForm">
         <!-- Name -->
-        <el-form-item
-          label="First Name"
-          :label-width="formLabelWidth"
-          prop="userFirstName"
-        >
+        <el-form-item label="First Name" :label-width="formLabelWidth" prop="userFirstName">
           <el-input
             v-model="formData.userFirstName"
             placeholder="Please enter first name"
           ></el-input>
         </el-form-item>
 
-        <el-form-item
-          label="Last Name"
-          :label-width="formLabelWidth"
-          prop="userLastName"
-        >
-          <el-input
-            v-model="formData.userLastName"
-            placeholder="Please enter last name"
-          ></el-input>
+        <el-form-item label="Last Name" :label-width="formLabelWidth" prop="userLastName">
+          <el-input v-model="formData.userLastName" placeholder="Please enter last name"></el-input>
         </el-form-item>
 
         <!-- Email -->
-        <el-form-item
-          label="Email"
-          :label-width="formLabelWidth"
-        >
-          <el-input
-            :value="user ? user.userEmail : ''"
-            placeholder="Please enter email"
-          ></el-input>
+        <el-form-item label="Email" :label-width="formLabelWidth">
+          <el-input :value="user ? user.userEmail : ''" placeholder="Please enter email"></el-input>
         </el-form-item>
 
-        <el-form-item
-          label="User ID"
-          :label-width="formLabelWidth"
-        >
+        <el-form-item label="User ID" :label-width="formLabelWidth">
           <el-input :value="user ? user.userId : ''"></el-input>
         </el-form-item>
 
-        <el-form-item
-          class="change-password-item"
-          label=""
-          :label-width="formLabelWidth"
-        >
+        <el-form-item class="change-password-item" label="" :label-width="formLabelWidth">
           <el-checkbox
             v-model="changePassword"
             label="Change Password"
@@ -76,11 +47,7 @@
             ></el-input>
           </el-form-item>
 
-          <el-form-item
-            label="New Password"
-            :label-width="formLabelWidth"
-            prop="newPassword"
-          >
+          <el-form-item label="New Password" :label-width="formLabelWidth" prop="newPassword">
             <el-input
               v-model="formData.newPassword"
               show-password
@@ -108,10 +75,7 @@
             confirmButtonText="Yes"
             cancelButtonText="Cancel"
           >
-            <el-button
-              slot="reference"
-              type="primary"
-            >Save Edit</el-button>
+            <el-button slot="reference" type="primary">Save Edit</el-button>
           </el-popconfirm>
         </el-form-item>
       </el-form>
@@ -185,14 +149,14 @@ export default {
             validator: this.validateConfirmPassword,
             trigger: "blur"
           }
-        ]
-      },
-      formLabelWidth: "200px"
+        ],
+        formLabelWidthL: "200px"
+      }
     };
   },
 
   computed: {
-    ...mapGetters(["user"])
+    ...mapGetters(["user", "isPhoneSize"])
   },
 
   watch: {
@@ -276,7 +240,7 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 .my-info {
   display: flex;
 
@@ -302,6 +266,21 @@ export default {
   .form-item-button {
     display: flex;
     justify-content: flex-end;
+  }
+}
+
+.is_phone .my-info .account-form {
+  margin: 0px !important;
+}
+
+.is_phone .el-form-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+
+  .el-form-item__content {
+    margin-left: 0px !important;
+    width: 100%;
   }
 }
 </style>

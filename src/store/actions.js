@@ -24,6 +24,20 @@ export const setUser = function({
     window.localStorage.setItem("gatunUserId", value.userId);
 };
 
+export const setScreenWidth = function({
+    commit
+}, value) {
+    commit(types.SET_SCREEN_WIDTH, value);
+
+};
+
+export const setIsPhoneSize = function({
+    commit
+}, value) {
+    commit(types.SET_IS_PHONE_SIZE, value);
+
+};
+
 export const setCart = function({
     commit
 }, list) {
@@ -155,6 +169,14 @@ export const initSite = function({
             return dispatch("getHomeSectionList");
         })
         .then(() => {
+            const screenWidth = document.body.clientWidth;
+            dispatch("setScreenWidth", screenWidth);
+            if (screenWidth && screenWidth <= 600) {
+                dispatch("setIsPhoneSize", true);
+            } else {
+                dispatch("setIsPhoneSize", false);
+            }
+
             const userId = window.localStorage.getItem("gatunUserId");
             const cartJson = window.localStorage.getItem("gatunCart");
             const cart = JSON.parse(cartJson);

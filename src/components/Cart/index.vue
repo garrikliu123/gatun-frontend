@@ -1,15 +1,12 @@
 <template>
-  <div class="ap-cart">
+  <div class="ap-cart" :class="{ 'ap-cart_phone': isPhoneSize }">
     <div class="item-count-text">
       <span>{{ shoppingCart.length }} Item(s) in Your Shopping Cart</span>
+      <div style="color: red">FREE Shipping on orders over $99</div>
     </div>
     <el-divider class="divider"></el-divider>
     <div>
-      <div
-        class="product-list"
-        v-for="(item, index) in productList"
-        :key="index"
-      >
+      <div class="product-list" v-for="(item, index) in productList" :key="index">
         <div class="product-item">
           <el-image
             style="width: 100px; height: 100px"
@@ -18,19 +15,12 @@
           ></el-image>
           <div class="text-group">
             <div class="text-link-wrap">
-              <el-link
-                class="text-link"
-                @click="onProductTitleClick(item)"
-              >{{
+              <el-link class="text-link" @click="onProductTitleClick(item)">{{
                 item.productName
               }}</el-link>
             </div>
             <div class="select-group">
-              <el-input-number
-                size="mini"
-                :min="1"
-                v-model="item.amount"
-              ></el-input-number>
+              <el-input-number size="mini" :min="1" v-model="item.amount"></el-input-number>
               <el-select
                 v-if="item.options.length > 0"
                 class="option-select"
@@ -55,50 +45,27 @@
             >
               {{ item.productPrice * item.amount }}
             </div>
-            <div
-              class="price"
-              v-else
-              v-format="'$##0.00'"
-            >
+            <div class="price" v-else v-format="'$##0.00'">
               {{ item.productPrice * item.amount }}
             </div>
           </div>
-          <i
-            class="delete-icon el-icon-error"
-            @click="onDeleteClick(item.productId)"
-          ></i>
+          <i class="delete-icon el-icon-error" @click="onDeleteClick(item.productId)"></i>
         </div>
         <el-divider class="divider"></el-divider>
       </div>
-      <div
-        class="footer-btn-group"
-        v-if="productList.length > 0"
-      >
+      <div class="footer-btn-group" v-if="productList.length > 0">
         <span class="total-price">
           Total:
-          <span
-            v-if="totalPrice >= 1000"
-            v-format="'$#,##0.00'"
-          >
+          <span v-if="totalPrice >= 1000" v-format="'$#,##0.00'">
             {{ totalPrice }}
           </span>
-          <span
-            v-else
-            v-format="'$##0.00'"
-          >
+          <span v-else v-format="'$##0.00'">
             {{ totalPrice }}
           </span>
         </span>
         <div class="button-group">
-          <el-button
-            size="small"
-            @click="onSaveCartClick"
-          >SAVE EDIT</el-button>
-          <el-button
-            size="small"
-            type="primary"
-            @click="onCheckout"
-          >CHECKOUT</el-button>
+          <el-button size="small" @click="onSaveCartClick">SAVE EDIT</el-button>
+          <el-button size="small" type="primary" @click="onCheckout">CHECKOUT</el-button>
         </div>
       </div>
     </div>
@@ -157,7 +124,7 @@ export default {
       });
       return price;
     },
-    ...mapGetters(["productListObj", "shoppingCart", "user"])
+    ...mapGetters(["productListObj", "shoppingCart", "user", "isPhoneSize"])
   },
 
   watch: {
@@ -211,9 +178,7 @@ export default {
           userId: this.user.userId
         });
 
-        const stripe = await loadStripe(
-          "pk_test_Q3mpLZeQr5ENsPzD3GWfFsDA00PblH3asT"
-        );
+        const stripe = await loadStripe("pk_test_Q3mpLZeQr5ENsPzD3GWfFsDA00PblH3asT");
 
         await stripe.redirectToCheckout({
           sessionId: session.id
@@ -241,7 +206,7 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 .ap-cart {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -269,7 +234,7 @@ export default {
     margin: 0 10px;
     display: flex;
     flex-direction: column;
-    width: 300px;
+    width: 200px;
     .text-link-wrap {
       display: flex;
     }
@@ -322,6 +287,16 @@ export default {
     .button-group {
       display: flex;
     }
+  }
+}
+
+.ap-cart_phone .footer-btn-group {
+  display: flex;
+  flex-direction: column !important;
+  align-items: flex-end;
+
+  .total-price {
+    margin-bottom: 10px;
   }
 }
 </style>

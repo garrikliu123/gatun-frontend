@@ -2,41 +2,25 @@
   <div class="ap-product">
     <div class="product-show">
       <!-- Carousel 轮播图 -->
-      <el-carousel
-        class="ap-carousel"
-        height="500px"
-      >
-        <el-carousel-item
-          v-for="item in matchedProduct.productImageList || []"
-          :key="item.name"
-        >
-          <el-image
-            class="carousel_img"
-            fit="contain"
-            :src="item.url"
-          ></el-image>
+      <div class="title" v-if="isPhoneSize">
+        {{ matchedProduct.productName }}
+      </div>
+      <el-carousel class="ap-carousel" height="500px">
+        <el-carousel-item v-for="item in matchedProduct.productImageList || []" :key="item.name">
+          <el-image class="carousel_img" fit="contain" :src="item.url"></el-image>
         </el-carousel-item>
       </el-carousel>
       <div class="right-group">
-        <div class="title">
+        <div class="title" v-if="!isPhoneSize">
           {{ matchedProduct.productName }}
         </div>
-        <el-divider content-position="right"><i
-            class="ap-nav-icon el-icon-shopping-cart-2"
-            style="font-size: 1.2em;"
-          ></i></el-divider>
-        <div
-          class="price"
-          v-if="matchedProduct.productPrice >= 1000"
-          v-format="'CAD $#,##0.00'"
-        >
+        <el-divider content-position="right"
+          ><i class="ap-nav-icon el-icon-shopping-cart-2" style="font-size: 1.2em;"></i
+        ></el-divider>
+        <div class="price" v-if="matchedProduct.productPrice >= 1000" v-format="'CAD $#,##0.00'">
           {{ matchedProduct.productPrice }}
         </div>
-        <div
-          class="price"
-          v-else
-          v-format="'CAD $##0.00'"
-        >
+        <div class="price" v-else v-format="'CAD $##0.00'">
           {{ matchedProduct.productPrice }}
         </div>
         <el-select
@@ -54,23 +38,11 @@
           >
           </el-option>
         </el-select>
-        <el-input-number
-          class="count"
-          v-model="count"
-          :min="1"
-          :max="100"
-        ></el-input-number>
-        <el-button
-          type="success"
-          class="button"
-          @click="onAddClick"
-        >ADD TO CART</el-button>
+        <el-input-number class="count" v-model="count" :min="1" :max="100"></el-input-number>
+        <el-button type="success" class="button" @click="onAddClick">ADD TO CART</el-button>
       </div>
     </div>
-    <ap-tab-display
-      class="ap-tab-display"
-      :product="matchedProduct"
-    ></ap-tab-display>
+    <ap-tab-display class="ap-tab-display" :product="matchedProduct"></ap-tab-display>
   </div>
 </template>
 <script>
@@ -127,7 +99,7 @@ export default {
       }
       return list;
     },
-    ...mapGetters(["productList", "shoppingCart"])
+    ...mapGetters(["productList", "shoppingCart", "isPhoneSize"])
   },
 
   watch: {
@@ -245,6 +217,30 @@ export default {
 
   .ap-tab-display {
     margin-bottom: 30px;
+  }
+}
+
+.is_phone .product-show {
+  display: flex;
+  flex-direction: column !important;
+  align-items: center;
+  .title {
+    margin-bottom: 20px;
+  }
+  .ap-carousel {
+    flex: 1 1 auto;
+    width: 100%;
+    height: 300px !important;
+    margin: 0;
+
+    .el-carousel__container {
+      height: 100% !important;
+    }
+  }
+
+  .right-group {
+    width: 100%;
+    align-items: center;
   }
 }
 </style>

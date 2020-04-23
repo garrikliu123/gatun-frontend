@@ -1,42 +1,32 @@
 <template>
   <div class="ap-account-order">
     <el-collapse accordion>
-      <el-collapse-item
-        v-for="(item, index) in orderList"
-        :key="index"
-        :name="item.orderId"
-      >
+      <el-collapse-item v-for="(item, index) in orderList" :key="index" :name="item.orderId">
         <template slot="title">
           <div class="collapse-title">
-            <div class="title-row">
-              <i class="icon el-icon-postcard"></i>
-              <span class="field">Order ID:</span>
-              <span class="content">{{item.orderId}}</span>
-              <el-divider direction="vertical"></el-divider>
+            <div class="title-row id-row">
+              <div class="order-id-group">
+                <i class="icon el-icon-postcard"></i>
+                <span class="field">Order ID:</span>
+              </div>
+              <span class="content">{{ item.orderId }}</span>
+              <el-divider direction="vertical" v-if="!isPhoneSize"></el-divider>
             </div>
 
             <div class="title-row">
               <i class="icon el-icon-date"></i>
               <span class="field">Order Time:</span>
-              <span class="content">{{formatDate(new Date(item.createTime))}}</span>
-              <el-divider direction="vertical"></el-divider>
+              <span class="content">{{ formatDate(new Date(item.createTime)) }}</span>
+              <el-divider direction="vertical" v-if="!isPhoneSize"></el-divider>
             </div>
 
             <div class="title-row">
               <i class="icon el-icon-money"></i>
               <span class="field">Total:</span>
-              <span
-                class="content"
-                v-if="item.total >= 1000"
-                v-format="'CAD $#,##0.00'"
-              >
+              <span class="content" v-if="item.total >= 1000" v-format="'CAD $#,##0.00'">
                 {{ item.total }}
               </span>
-              <span
-                class="content"
-                v-else
-                v-format="'CAD $##0.00'"
-              >
+              <span class="content" v-else v-format="'CAD $##0.00'">
                 {{ item.total }}
               </span>
             </div>
@@ -45,39 +35,35 @@
         <div class="shipping">
           <div class="shipping-row">
             <span class="shipping-field">Name:</span>
-            {{item.orderShipping.name}}
+            {{ item.orderShipping.name }}
           </div>
           <div class="shipping-row">
             <span class="shipping-field">Address 1:</span>
-            {{item.orderShipping.line1}}
+            {{ item.orderShipping.line1 }}
           </div>
           <div class="shipping-row">
             <span class="shipping-field">Address 2:</span>
-            {{item.orderShipping.line2}}
+            {{ item.orderShipping.line2 }}
           </div>
           <div class="shipping-row">
             <span class="shipping-field">City:</span>
-            {{item.orderShipping.city}}
+            {{ item.orderShipping.city }}
           </div>
           <div class="shipping-row">
             <span class="shipping-field">State:</span>
-            {{item.orderShipping.state}}
+            {{ item.orderShipping.state }}
           </div>
           <div class="shipping-row">
             <span class="shipping-field">Country:</span>
-            {{item.orderShipping.country}}
+            {{ item.orderShipping.country }}
           </div>
           <div class="shipping-row">
             <span class="shipping-field">Postal Code:</span>
-            {{item.orderShipping.postal_code}}
+            {{ item.orderShipping.postal_code }}
           </div>
         </div>
         <el-divider></el-divider>
-        <div
-          class="product-item"
-          v-for="(product, index) in item.orderDetail"
-          :key="index"
-        >
+        <div class="product-item" v-for="(product, index) in item.orderDetail" :key="index">
           <div class="product-wrap">
             <el-image
               style="width: 100px; height: 100px"
@@ -87,31 +73,27 @@
             <div class="text-group">
               <span class="detail-field">
                 <span class="detail-field-title">Name:</span>
-                {{product.name}}
+                {{ product.name }}
               </span>
-              <span class="detail-field">
+              <!-- <span class="detail-field">
                 <span class="detail-field-title">Description:</span>
-                {{product.description}}
-              </span>
+                {{ product.description }}
+              </span> -->
               <span class="detail-field">
                 <span class="detail-field-title">Quantity:</span>
-                {{product.quantity}}
+                {{ product.quantity }}
               </span>
             </div>
             <div class="right-group">
               <div
                 class="price"
-                v-if="product.amount / 100 * product.quantity >= 1000"
+                v-if="(product.amount / 100) * product.quantity >= 1000"
                 v-format="'$#,##0.00'"
               >
-                {{ product.amount / 100 * product.quantity }}
+                {{ (product.amount / 100) * product.quantity }}
               </div>
-              <div
-                class="price"
-                v-else
-                v-format="'$##0.00'"
-              >
-                {{ product.amount / 100 * product.quantity }}
+              <div class="price" v-else v-format="'$##0.00'">
+                {{ (product.amount / 100) * product.quantity }}
               </div>
             </div>
           </div>
@@ -131,7 +113,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["orderHistory"])
+    ...mapGetters(["orderHistory", "isPhoneSize"])
   },
 
   watch: {
@@ -218,7 +200,8 @@ export default {
         overflow: hidden;
         display: -webkit-box;
         -webkit-box-orient: vertical;
-        -webkit-line-clamp: 2;
+        -webkit-line-clamp: 3;
+        text-align: left;
       }
 
       .detail-field-title {
@@ -251,5 +234,18 @@ export default {
       margin-right: 5px;
     }
   }
+}
+
+.is_phone .el-collapse-item__header {
+  height: 200px;
+}
+
+.is_phone .collapse-title {
+  display: flex;
+  flex-direction: column;
+}
+
+.is_phone .order-id-group {
+  flex: 0 0 auto;
 }
 </style>

@@ -1,9 +1,6 @@
 <template>
   <div class="ap-tab-display">
-    <el-tabs
-      v-model="activeTab"
-      type="border-card"
-    >
+    <el-tabs v-model="activeTab" type="border-card">
       <el-tab-pane
         v-for="(item, index) in contentList"
         :label="item.label"
@@ -11,26 +8,13 @@
         :key="index"
       >
         <template v-if="item.label == 'FILES'">
-          <template v-if="item.content && item.content.length > 0">
-            <div
-              class="file-link"
-              v-for="(file, index) in item.content"
-              :key="index"
-            >
-              <i class="el-icon-document"></i>
-              <el-link
-                type="primary"
-                :href="file.url"
-                target="_blank"
-              >{{ file.name }}</el-link>
-            </div>
-          </template>
+          <div class="file-link" v-for="(file, index) in item.content" :key="index">
+            <i class="el-icon-document"></i>
+            <el-link type="primary" :href="file.url" target="_blank">{{ file.name }}</el-link>
+          </div>
         </template>
         <template v-else>
-          <ap-texteditor
-            :readonly="true"
-            :value="item.content"
-          ></ap-texteditor>
+          <ap-texteditor :readonly="true" :value="item.content"></ap-texteditor>
         </template>
       </el-tab-pane>
     </el-tabs>
@@ -86,7 +70,7 @@ export default {
           });
         }
 
-        if (product.productFileList) {
+        if (product.productFileList && product.productFileList.length > 0) {
           list.push({
             label: "FILES",
             content: product.productFileList
@@ -100,6 +84,7 @@ export default {
           });
         }
       }
+      console.log(list);
       return list;
     }
   },

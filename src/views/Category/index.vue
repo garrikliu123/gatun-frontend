@@ -157,4 +157,23 @@ export default {
     }
   }
 }
+
+.is_phone .ap-category {
+  .topic-list {
+    justify-content: flex-start;
+  }
+
+  .topic-card-container {
+    flex: 0 0 50%;
+    box-sizing: border-box;
+    padding: 0px 5px 5px 0px;
+    .topic-card {
+      box-shadow: none;
+      height: 200px;
+      .image {
+        object-fit: contain;
+      }
+    }
+  }
+}
 </style>

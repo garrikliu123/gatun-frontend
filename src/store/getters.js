@@ -47,6 +47,14 @@ export const orderHistory = (state) => {
     return state.orderHistory
 }
 
+export const screenWidth = (state) => {
+    return state.screenWidth
+}
+
+export const isPhoneSize = (state) => {
+    return state.isPhoneSize
+}
+
 export const homeSectionList = (state) => {
     const list = [];
 
