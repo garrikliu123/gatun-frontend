@@ -3,33 +3,18 @@
     class="ap-dialog"
     :title="mode == 'login' ? 'Log In' : 'Register'"
     :visible.sync="dialogVisible"
-    width="1100px"
+    :width="isPhoneSize ? '100%' : '1100px'"
   >
     <div class="dialog-inner">
-      <el-form
-        :model="formData"
-        :rules="formRules"
-        ref="editLoginForm"
-      >
+      <el-form :model="formData" :rules="formRules" ref="editLoginForm">
         <template v-if="mode == 'login'">
           <!-- Name -->
-          <el-form-item
-            label="Email"
-            :label-width="formLabelWidth"
-            prop="userEmail"
-          >
-            <el-input
-              v-model="formData.userEmail"
-              placeholder="Please enter email"
-            ></el-input>
+          <el-form-item label="Email" :label-width="formLabelWidth" prop="userEmail">
+            <el-input v-model="formData.userEmail" placeholder="Please enter email"></el-input>
           </el-form-item>
 
           <!-- Password -->
-          <el-form-item
-            label="Password"
-            :label-width="formLabelWidth"
-            prop="userPassword"
-          >
+          <el-form-item label="Password" :label-width="formLabelWidth" prop="userPassword">
             <el-input
               v-model="formData.userPassword"
               show-password
@@ -39,22 +24,14 @@
         </template>
         <template v-else>
           <!-- Name -->
-          <el-form-item
-            label="First Name"
-            :label-width="formLabelWidth"
-            prop="userFirstName"
-          >
+          <el-form-item label="First Name" :label-width="formLabelWidth" prop="userFirstName">
             <el-input
               v-model="formData.userFirstName"
               placeholder="Please enter first name"
             ></el-input>
           </el-form-item>
 
-          <el-form-item
-            label="Last Name"
-            :label-width="formLabelWidth"
-            prop="userLastName"
-          >
+          <el-form-item label="Last Name" :label-width="formLabelWidth" prop="userLastName">
             <el-input
               v-model="formData.userLastName"
               placeholder="Please enter last name"
@@ -62,23 +39,12 @@
           </el-form-item>
 
           <!-- Email -->
-          <el-form-item
-            label="Email"
-            :label-width="formLabelWidth"
-            prop="userEmail"
-          >
-            <el-input
-              v-model="formData.userEmail"
-              placeholder="Please enter email"
-            ></el-input>
+          <el-form-item label="Email" :label-width="formLabelWidth" prop="userEmail">
+            <el-input v-model="formData.userEmail" placeholder="Please enter email"></el-input>
           </el-form-item>
 
           <!-- Password -->
-          <el-form-item
-            label="Password"
-            :label-width="formLabelWidth"
-            prop="userPassword"
-          >
+          <el-form-item label="Password" :label-width="formLabelWidth" prop="userPassword">
             <el-input
               v-model="formData.userPassword"
               show-password
@@ -89,34 +55,20 @@
       </el-form>
     </div>
 
-    <div
-      slot="footer"
-      class="dialog-footer"
-    >
+    <div slot="footer" class="dialog-footer">
       <el-button @click="dialogVisible = false">Cancel</el-button>
-      <el-button
-        v-if="mode == 'login'"
-        type="primary"
-        @click="onSubmitClick"
-      >Log In</el-button>
-      <el-button
-        v-else
-        type="primary"
-        @click="onRegisterClick"
-      >Register</el-button>
+      <el-button v-if="mode == 'login'" type="primary" @click="onSubmitClick">Log In</el-button>
+      <el-button v-else type="primary" @click="onRegisterClick">Register</el-button>
     </div>
   </el-dialog>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import { v4 as uuidv4 } from "uuid";
 import { mapActions } from "vuex";
 import userApi from "api/user";
-import {
-  validatePassword,
-  validateEmail,
-  validateName
-} from "common/utils/validateRules";
+import { validatePassword, validateEmail, validateName } from "common/utils/validateRules";
 export default {
   props: {
     mode: {
@@ -173,6 +125,10 @@ export default {
     };
   },
 
+  computed: {
+    ...mapGetters(["isPhoneSize"])
+  },
+
   methods: {
     onSubmitClick() {
       this.$refs.editLoginForm.validate(valid => {
@@ -223,6 +179,7 @@ export default {
 
 <style lang="less" scoped>
 .ap-dialog {
+  margin: 0 5px;
   overflow-x: visible;
   .dialog-inner {
     max-height: 60vh;

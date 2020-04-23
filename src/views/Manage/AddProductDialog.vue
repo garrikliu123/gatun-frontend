@@ -47,7 +47,7 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item label="Options" :label-width="formLabelWidth" prop="productApplication">
+      <!-- <el-form-item label="Options" :label-width="formLabelWidth" prop="productApplication">
         <el-select
           class="form-item product-options"
           v-model="formData.productOptionList"
@@ -57,7 +57,7 @@
           default-first-option
           no-data-text="You can enter an option for this product"
         ></el-select>
-      </el-form-item>
+      </el-form-item> -->
     </el-form>
 
     <!-- Pictures -->

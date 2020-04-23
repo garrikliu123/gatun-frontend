@@ -17,7 +17,12 @@
     </div>
 
     <p class="product-title">{{ title }}</p>
-    <p class="product-price">${{ price }}</p>
+    <div class="product-price" v-if="price >= 1000" v-format="'CAD $#,##0.00'">
+      {{ price }}
+    </div>
+    <div class="product-price" v-else v-format="'CAD $##0.00'">
+      {{ price }}
+    </div>
 
     <el-button class="product-add-button" type="primary" @click.stop="$emit('addCartClick')"
       >ADD TO CART</el-button

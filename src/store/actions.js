@@ -155,6 +155,13 @@ export const getHomeSectionList = function({
 export const initSite = function({
     dispatch
 }) {
+    const screenWidth = document.body.clientWidth;
+    dispatch("setScreenWidth", screenWidth);
+    if (screenWidth && screenWidth <= 600) {
+        dispatch("setIsPhoneSize", true);
+    } else {
+        dispatch("setIsPhoneSize", false);
+    }
     dispatch("getProductList")
         .then(() => {
             return dispatch("getCategoryList");
@@ -169,13 +176,6 @@ export const initSite = function({
             return dispatch("getHomeSectionList");
         })
         .then(() => {
-            const screenWidth = document.body.clientWidth;
-            dispatch("setScreenWidth", screenWidth);
-            if (screenWidth && screenWidth <= 600) {
-                dispatch("setIsPhoneSize", true);
-            } else {
-                dispatch("setIsPhoneSize", false);
-            }
 
             const userId = window.localStorage.getItem("gatunUserId");
             const cartJson = window.localStorage.getItem("gatunCart");
