@@ -254,7 +254,7 @@ export default {
 
             productApi.addProduct(this.formData).then(res => {
               this.dialogVisible = false;
-              this.getProductList();
+              // this.getProductList();
               if (res.success) {
                 this.$message({
                   type: "success",
@@ -266,7 +266,7 @@ export default {
           } else if (this.mode === productConfig.MODE.EDIT) {
             productApi.updateProduct(this.formData).then(res => {
               this.dialogVisible = false;
-              this.getProductList();
+              // this.getProductList();
               if (res.success) {
                 this.$message({
                   type: "success",
